@@ -1,83 +1,84 @@
-from docx import Document
-from docx.document import Document as _Document
-from docx.oxml.text.paragraph import CT_P
-from docx.oxml.table import CT_Tbl
-from docx.text.paragraph import Paragraph
-from docx.table import Table
-from docx.table import _Cell
+from typing import Dict, List, Optional, Any
+from docx_parser import DocxParser
+from cover_page_classifier import CoverPageClassifier
+from section_generator import SectionGenerator
 
-def iter_block_items(parent):
-    """
-    Generate a reference to each paragraph and table child within the parent,
-    in document order. Each returned value is an instance of either
-    Paragraph or Table.
-    """
-    if isinstance(parent, _Document):
-        parent_elm = parent.element.body
-    elif isinstance(parent, _Cell):
-        parent_elm = parent._tc
-    else:
-        raise ValueError("Parent must be a Document or Cell object")
-
-    for child in parent_elm.iterchildren():
-        if isinstance(child, CT_P):
-            yield Paragraph(child, parent)
-        elif isinstance(child, CT_Tbl):
-            yield Table(child, parent)
-
-def get_document_blocks(docx_path):
-    """
-    Parse the docx file and return a list of block objects (Paragraphs or Tables).
-    Each block will have its sequence index and type.
-    """
-    try:
-        document = Document(docx_path)
-    except Exception as ex:
-        print(f"Could not open document {docx_path}. Got Exception: {ex}")
-        return []
-
-    blocks = []
-    for i, block in enumerate(iter_block_items(document)):
-        block_type = "paragraph" if isinstance(block, Paragraph) else "table"
-        block_text = ""
-        if isinstance(block, Paragraph):
-            block_text = block.text.strip()
-        elif isinstance(block, Table):
-            table_texts = []
-            for row in block.rows:
-                row_texts = [cell.text.strip() for cell in row.cells]
-                table_texts.append(" | ".join(row_texts))
-            block_text = "\n".join(table_texts)
-
-        blocks.append({
-            "index": i,
-            "type": block_type,
-            "content": block_text,
-            "raw_block": block
-        })
-        print(f"Block {i} ({block_type}): {block_text[:100]}...")
-    return blocks
+debug = False  # Set to True for verbose output, False for minimal logs
 
 def main():
-    """Main function to run the document parser"""
+    """Main function to run the enhanced document parser and classifier"""
+
+    # Testing file paths - ensure this path is correct or make it configurable
     docx_file = 'data/financial_statements/BestCo Work Sample v1.0.docx'
+    #docx_file = 'data/financial_statements/1933 Work Sample.docx'
+    #docx_file = 'data/financial_statements/PVI Work Sample.docx'
 
-    print(f"Processing document: {docx_file}")
-    doc_blocks = get_document_blocks(docx_file)
+    if debug:
+        print(f"Processing document: {docx_file}")
+        print("=" * 60)
 
-    if not doc_blocks:
-        print("No blocks found or error processing document")
+    # DocxParser MUST return blocks with 'index', 'content', and 'type'
+    parser = DocxParser(debug)
+    meaningful_blocks = parser.parse_document(docx_file)
+
+    if not meaningful_blocks:
+        if debug:
+            print("No meaningful blocks found or error processing document.")
         return
 
-    print(f"\nFound {len(doc_blocks)} blocks total")
-    print("-" * 50)
+    if debug:
+        print(f"Found {len(meaningful_blocks)} meaningful blocks from parser.")
 
-    # Process the blocks
-    for block_data in doc_blocks:
-        print(f"Index: {block_data['index']}, Type: {block_data['type']}")
+    # validation of block structure from parser
+    if meaningful_blocks:
+        first_block = meaningful_blocks[0]
+        if not all(key in first_block for key in ['index', 'content', 'type']):
+            if debug:
+                print("\nERROR: Parsed blocks do not seem to have the required keys: 'index', 'content', 'type'.")
+                print(f"Example of first block's keys: {list(first_block.keys()) if isinstance(first_block, dict) else 'Not a dict'}")
+                print("Please ensure your DocxParser provides these keys for each block.\n")
+                return
+        # structure of first few blocks if valid
+        else:
+            if debug:
+                print("Structure check for first few parsed blocks:")
+            for idx, block_item in enumerate(meaningful_blocks[:min(3, len(meaningful_blocks))]):
+                 if debug:
+                    print(f"  Block {idx}: Index={block_item.get('index')}, Type='{block_item.get('type')}', "
+                        f"Content='{str(block_item.get('content'))[:30].replace(chr(10),' ').strip()}...'")
+    if debug:
+        print("-" * 60)
 
-        print(f"Content: {block_data['content']}")
-        print()
+    # initialize classifier and classify cover page
+    classifier = CoverPageClassifier()
+
+    # call classify_cover_page with desired parameters.
+    cover_page_info = classifier.classify_cover_page(
+        meaningful_blocks,
+        # threshold for cover page section (0.0 to 1.0)
+        confidence_threshold=0.55,
+        # how far into the doc to start looking for a cover page
+        max_start_block_index_to_check=500,
+        debug=False
+    )
+
+    if debug:
+        # display results using the updated function
+        classifier.display_cover_page_results(cover_page_info, meaningful_blocks)
+        print("\n" + "="*60)
+        print("Document analysis complete!")
+
+    generator = SectionGenerator()
+    generator.add_normalized_section(
+        section_header="Cover Page",
+        normalized_section="cover_page",
+        start_block=cover_page_info['start_block_index'],
+        end_block=cover_page_info['end_block_index'],
+        confidence_rate=cover_page_info['confidence']
+    )
+
+    financialSections = generator.get_sections()
+    print(financialSections)
 
 
 if __name__ == "__main__":
