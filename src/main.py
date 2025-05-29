@@ -2,8 +2,9 @@ from typing import Dict, List, Optional, Any
 from docx_parser import DocxParser
 from cover_page_classifier import CoverPageClassifier
 from section_generator import SectionGenerator
+from sofpc_classifier import SoFPClassifier
 
-debug = False  # Set to True for verbose output, False for minimal logs
+debug = False  # Set to True for debugging output
 
 def main():
     """Main function to run the enhanced document parser and classifier"""
@@ -50,10 +51,10 @@ def main():
         print("-" * 60)
 
     # initialize classifier and classify cover page
-    classifier = CoverPageClassifier()
+    cpClassifier = CoverPageClassifier()
 
     # call classify_cover_page with desired parameters.
-    cover_page_info = classifier.classify_cover_page(
+    cover_page_info = cpClassifier.classify_cover_page(
         meaningful_blocks,
         # threshold for cover page section (0.0 to 1.0)
         confidence_threshold=0.55,
@@ -64,7 +65,7 @@ def main():
 
     if debug:
         # display results using the updated function
-        classifier.display_cover_page_results(cover_page_info, meaningful_blocks)
+        cpClassifier.display_cover_page_results(cover_page_info, meaningful_blocks)
         print("\n" + "="*60)
         print("Document analysis complete!")
 
@@ -75,6 +76,22 @@ def main():
         start_block=cover_page_info['start_block_index'],
         end_block=cover_page_info['end_block_index'],
         confidence_rate=cover_page_info['confidence']
+    )
+
+    sofpClassifier = SoFPClassifier()
+    sofpc_info = sofpClassifier.classify_sofp_section(
+        meaningful_blocks,
+        confidence_threshold=0.5,
+        max_start_block_index_to_check=500,
+        debug=False
+    )
+
+    generator.add_normalized_section(
+        section_header="Statement of Financial Position",
+        normalized_section="statement_of_financial_position",
+        start_block=sofpc_info['start_block_index'],
+        end_block=sofpc_info['end_block_index'],
+        confidence_rate=sofpc_info['confidence']
     )
 
     financialSections = generator.get_sections()
