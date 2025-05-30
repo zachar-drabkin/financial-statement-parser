@@ -1,0 +1,71 @@
+{
+    "max_score_exemplar": 12,
+    "title_phrases": {
+        "keywords": [
+            "CONSOLIDATED FINANCIAL STATEMENTS", "FINANCIAL STATEMENTS",
+            "CONSOLIDATED FINANCIAL STATEMENT", "FINANCIAL STATEMENT",
+            "ANNUAL REPORT", "QUARTERLY REPORT", "INTERIM REPORT",
+            "CONSOLIDATED ANNUAL FINANCIAL REPORT",
+            "STATEMENT OF FINANCIAL POSITION", "CONSOLIDATED STATEMENT OF FINANCIAL POSITION",
+            "BALANCE SHEET", "CONSOLIDATED BALANCE SHEET",
+            "INCOME STATEMENT", "CONSOLIDATED INCOME STATEMENT",
+            "STATEMENT OF PROFIT OR LOSS", "STATEMENT OF COMPREHENSIVE INCOME",
+            "CONSOLIDATED STATEMENT OF COMPREHENSIVE INCOME",
+            "STATEMENT OF CASH FLOWS", "CONSOLIDATED STATEMENT OF CASH FLOWS",
+            "STATEMENT OF CHANGES IN EQUITY", "CONSOLIDATED STATEMENT OF CHANGES IN EQUITY",
+            "STATEMENT OF STOCKHOLDERS' EQUITY", "CONSOLIDATED STATEMENT OF STOCKHOLDERS' EQUITY",
+            "UNAUDITED FINANCIAL STATEMENTS", "AUDITED FINANCIAL STATEMENTS",
+            "INTERIM CONDENSED CONSOLIDATED FINANCIAL STATEMENTS",
+            "UNAUDITED CONSOLIDATED FINANCIAL STATEMENTS"
+        ],
+        "score": 4
+    },
+    "date_phrases": {
+        "keywords": [
+            "FOR THE YEAR ENDED", "FOR THE YEARS ENDED", "FOR THE PERIOD ENDED",
+            "AS AT", "AS OF", "YEAR ENDED", "YEARS ENDED", "PERIOD ENDED", "ENDED",
+            "FOR THE THREE MONTHS ENDED", "FOR THE SIX MONTHS ENDED", "FOR THE NINE MONTHS ENDED",
+            "YEAR ENDING", "QUARTER ENDING", "MONTH ENDING"
+        ],
+        "patterns": [
+            "\\b(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\\s+\\d{1,2},\\s+(19|20)\\d{2}\\b",
+            "\\b\\d{1,2}\\s+(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\\s+(19|20)\\d{2}\\b",
+            "\\b(19|20)\\d{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])\\b"
+        ],
+        "score": 2
+    },
+    "currency_phrases": {
+        "keywords": [
+            "EXPRESSED IN", "AMOUNTS IN", "REPORTING CURRENCY", "PRESENTATION CURRENCY",
+            "CANADIAN DOLLARS", "US DOLLARS", "UNITED STATES DOLLARS",
+            "EURO", "EUROS", "POUND STERLING", "POUNDS STERLING", "SWISS FRANC",
+            "SWISS FRANCS", "JAPANESE YEN", "AUSTRALIAN DOLLAR", "AUSTRALIAN DOLLARS",
+            "IN THOUSANDS", "IN MILLIONS", "IN BILLIONS", "THOUSANDS OF", "MILLIONS OF",
+            "BILLIONS OF", "IN THOUSANDS OF USD", "IN MILLIONS OF EUR",
+            "AMOUNTS IN THOUSANDS", "AMOUNTS IN MILLIONS", "(UNLESS OTHERWISE STATED)"
+        ],
+        "iso_codes": [
+            "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "KRW",
+            "SGD", "HKD", "NZD", "SEK", "NOK", "DKK", "PLN", "CZK", "HUF", "RUB",
+            "BRL", "MXN", "ZAR", "TRY", "ILS"
+        ],
+        "symbols": ["$", "€", "£", "¥", "₹", "₩", "₽"],
+        "score": 2,
+        "single_indicator_score": 1
+    },
+    "company_indicators": {
+        "suffixes": [
+            "LTD", "LIMITED", "INC", "INCORPORATED", "CORP", "CORPORATION", "PLC",
+            "LLC", "LLP", "LP", "PC", "AG", "GMBH", "KGAA", "S\\.A\\.", "SAS",
+            "SARL", "S\\.L\\.", "S\\.R\\.L\\.", "N\\.V\\.", "B\\.V\\.", "S\\.P\\.A\\.",
+            "AB", "AS", "A/S", "OYJ", "OY", "SA", "SP\\. Z O\\.O\\.", "SRO",
+            "K\\.K\\.", "CO\\., LTD", "PTY LTD"
+        ],
+        "score": 1
+    },
+    "year_pattern_score": 1,
+    "block_bonus_max_index": 10,
+    "block_bonus_score": 1,
+    "combination_bonus_min_strong_indicators": 3,
+    "combination_bonus_score": 1
+}
