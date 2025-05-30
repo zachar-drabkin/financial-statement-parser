@@ -1,0 +1,125 @@
+{
+    "cohesion_threshold_to_prevent_soft_break": 1,
+    "section_header_default": "Notes to Financial Statements",
+    "note_start_patterns": {
+        "general_note_pattern": "^\\s*(?:(?:Note|NOTE|ITEM|Item)\\s*)?([A-Za-z0-9]+(?:[\\.\\-][A-Za-z0-9]+)*)\\s*[\\.:\\-–—]?\\s*(.*)",
+        "numeric_note_pattern": "^\\s*(\\d+[\\.]?[A-Za-z]?)\\s*[\\.:\\-–—]+\\s*(.*)",
+        "heuristic_parse_note_start": {
+            "pattern1": "^\\s*(?:Note|NOTE|ITEM|Item)\\s+([A-Za-z0-9]+(?:[\\.\\-][A-Za-z0-9]+)*)\\s*[\\.:\\-–—]?\\s*(.{6,})",
+            "pattern2": "^\\s*([A-Za-z0-9]+(?:[\\.\\-][A-Za-z0-9]+)*\\.?)\\s+(?![\\d\\W]*$)([A-Z][A-Za-z0-9\\s\\(\\)\\-\\,\\&\\/\\.'“”‘’]{5,}.*)",
+            "common_sentence_starters": [
+                "THE", "A", "AN", "IT", "THIS", "THAT", "THESE", "THOSE", "HE", "SHE", "WE", "THEY",
+                "IN", "ON", "AT", "FOR", "AS", "OF", "IF", "ALL", "ANY", "SOME", "MANY", "MORE", "MOST",
+                "UNDER", "ABOUT", "WITH", "FROM", "OTHER", "SUCH", "WHEN", "WHERE", "WHICH", "WHO",
+                "TOTAL", "NET", "GROSS", "LESS", "PLUS", "EQUALS", "SHOULD", "WOULD", "COULD", "MAY", "MIGHT"
+            ],
+            "allowed_short_alpha_numbers": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"],
+            "short_alpha_num_context_words": ["APPENDIX", "SCHEDULE", "EXHIBIT"],
+            "max_unlikely_note_number_length": 3,
+            "min_unlikely_note_number_value": 200,
+            "min_long_uppercase_title_len": 40
+        }
+    },
+    "note_definitions": {
+        "Nature of Operations and Going Concern": {
+            "canonical_title": "Nature of Operations and Going Concern",
+            "title_patterns": [
+                "Nature of Operations and Going Concern",
+                "Nature of Business and Going Concern",
+                "Organization and Going Concern"
+            ],
+            "primary_keywords": [
+                "nature of operations", "operations", "going concern", "business", "company",
+                "incorporated", "properties", "mineral properties", "project", "producing project",
+                "exploration", "development", "mining", "concession rights",
+                "working capital", "deficit", "material uncertainty", "continue its operations",
+                "adequate funding", "realize assets", "discharge liabilities"
+            ],
+            "secondary_keywords": [
+                "liquidit", "financing", "debt", "equity", "obligations", "next twelve months", "ltd", "inc",
+                "registered office", "tsx venture exchange"
+            ],
+            "structural_cues_rules": [
+                 {"type": "phrase_exists", "phrase": "existence of a material uncertainty", "score": 2},
+                 {"type": "phrase_exists", "phrase": "may cast significant doubt", "score": 2}
+            ],
+            "positional_heuristics": {"expected_note_numbers": ["1", "A"], "score_bonus": 3},
+            "max_score_components": {"title": 5, "primary_keywords": 10, "secondary_keywords": 5, "structure": 4, "position": 3, "content_volume_bonus": 1.5},
+            "max_score_exemplar": 28.5
+        },
+        "Basis of Preparation": {
+            "canonical_title": "Basis of Preparation",
+            "title_patterns": [
+                "Basis of Preparation",
+                "Basis of Presentation",
+                "General Information (and|&) Basis of Preparation"
+            ],
+            "primary_keywords": [
+                "basis of preparation", "basis of presentation", "statement of compliance",
+                "accounting framework", "IFRS", "US GAAP", "Generally Accepted Accounting Principles",
+                "fiscal year", "reporting period", "functional currency", "presentation currency",
+                "historical cost basis", "basis of consolidation", "subsidiaries", "accounting standards"
+            ],
+            "secondary_keywords": [
+                "compliance with IFRS", "compliance with US GAAP",
+                "approved by the board", "authorized for issue", "intercompany transactions",
+                "interpretations committee", "iasb"
+            ],
+            "structural_cues_rules": [
+                {"type": "phrase_exists", "phrase": "These financial statements have been prepared in accordance with", "score": 2},
+                {"type": "phrase_exists", "phrase": "statement of compliance", "score": 1},
+                {"type": "section_exists", "keywords": ["basis of consolidation", "subsidiaries"], "score": 2}
+            ],
+            "positional_heuristics": {"expected_note_numbers": ["1", "2", "A", "B"], "score_bonus": 3},
+            "max_score_components": {"title": 5, "primary_keywords": 8, "secondary_keywords": 4, "structure": 5, "position": 3, "content_volume_bonus": 1.5},
+            "max_score_exemplar": 26.5
+        },
+        "Significant Accounting Policies": {
+            "canonical_title": "Summary of Significant Accounting Policies",
+            "title_patterns": [
+                "Summary of Significant Accounting Policies", "Significant Accounting Policies",
+                "Accounting Policies", "Material Accounting Policies"
+            ],
+            "primary_keywords": [
+                "significant accounting policies", "material accounting policies", "use of estimates",
+                "critical accounting judgements", "principles of consolidation", "revenue recognition",
+                "property, plant and equipment", "intangible assets", "leases", "income taxes",
+                "financial instruments", "cash and cash equivalents", "inventory", "impairment"
+            ],
+            "secondary_keywords": [
+                "new accounting standards", "recently adopted pronouncements", "recently issued pronouncements",
+                "amendments to standards", "ASC", "IFRS", "IAS"
+            ],
+            "structural_cues_rules": [
+                {"type": "section_exists", "keywords": ["new accounting standards", "recently issued"], "score": 3},
+                {"type": "list_of_policies_implied", "min_keywords": 5, "keyword_list_ref": "primary_keywords", "score": 2}
+            ],
+            "positional_heuristics": {"expected_note_numbers": ["1", "2", "3", "A", "B", "C"], "score_bonus": 3},
+            "max_score_components": {"title": 5, "primary_keywords": 10, "secondary_keywords": 5, "structure": 5, "position": 3, "content_volume_bonus": 1.5},
+            "max_score_exemplar": 29.5
+        },
+        "Property, Plant, and Equipment": {
+            "canonical_title": "Property, Plant, and Equipment",
+            "title_patterns": [
+                "Property, Plant(?:,| and) Equipment", "Property and Equipment", "Fixed Assets(?:, Net)?"
+            ],
+            "primary_keywords": [
+                "property, plant and equipment", "ppe", "fixed assets", "land", "buildings",
+                "machinery and equipment", "accumulated depreciation", "depreciation expense",
+                "useful lives", "carrying amount", "additions", "disposals", "impairment loss"
+            ],
+            "secondary_keywords": [
+                "straight-line method", "declining balance method", "cost model", "revaluation model",
+                "construction in progress", "capital commitments"
+            ],
+            "structural_cues_rules": [
+                {"type": "phrase_exists", "phrase": "reconciliation of carrying amounts", "score": 2},
+                {"type": "phrase_exists", "phrase": "movements in property, plant and equipment", "score": 2},
+                {"type": "table_headers_hint", "headers": ["Opening Balance", "Additions", "Disposals", "Depreciation"], "score": 4}
+            ],
+            "positional_heurISTICS": {},
+            "max_score_components": {"title": 5, "primary_keywords": 10, "secondary_keywords": 5, "structure": 6, "position": 0, "content_volume_bonus": 1.5},
+            "max_score_exemplar": 27.5
+        }
+    }
+}

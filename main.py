@@ -103,11 +103,10 @@ def main():
     sofpClassifier = SoFPClassifier(rules_file_path=rules_file_path_sofp)
     sofpc_info = sofpClassifier.classify( # Changed method name
         meaningful_blocks,
-        # Pass the list index for where to start in doc_blocks
-        start_block_index_in_list=start_index_for_sofp_list, # Custom kwarg for classify
+        # index to start in doc_blocks
+        start_block_index_in_list=start_index_for_sofp_list,
         confidence_threshold=0.5,
         max_start_block_index_to_check=500
-        # No 'debug' argument needed
     )
 
     sofpClassifier.display_results(sofpc_info, meaningful_blocks) # Display results
@@ -130,7 +129,7 @@ def main():
     start_index_for_soci_doc = 0
     start_index_for_soci_list = 0
 
-    if sofpc_info: # if SoFP was found
+    if sofpc_info:
         start_index_for_soci_doc = sofpc_info['end_block_index'] + 1
     elif cover_page_info: # fallback if SoFP not found - but Cover Page was
         start_index_for_soci_doc = cover_page_info['end_block_index'] + 1
@@ -173,38 +172,43 @@ def main():
 
     # --- Financial Notes Classification ---
     start_index_for_notes_doc = 0
-    start_index_for_notes_list = 0
-    if socicInfo:
-        start_index_for_notes_doc = socicInfo['end_block_index'] + 1
-    elif sofpc_info:
-        start_index_for_notes_doc = sofpc_info['end_block_index'] + 1
-    elif cover_page_info:
-        start_index_for_notes_doc = cover_page_info['end_block_index'] + 1
+    start_index_for_notes_list = 0 # List index in meaningful_blocks
 
+    # start index based on previous successful classifications
+    if socicInfo: # SoCI index if found
+        start_index_for_notes_doc = socicInfo['end_block_index'] + 1
+    elif sofpc_info: # fallback to SoFP
+        start_index_for_notes_doc = sofpc_info['end_block_index'] + 1
+    elif cover_page_info: # fallback to Cover Page
+        start_index_for_notes_doc = cover_page_info['end_block_index'] + 1
+    # else: start_index_for_notes_doc remains 0
+
+    # find the corresponding list index for the doc index
     for idx, block in enumerate(meaningful_blocks):
         if block['index'] >= start_index_for_notes_doc:
             start_index_for_notes_list = idx
             break
-    else:
+    else: # iff all blocks are part of previous sections or no blocks left
         start_index_for_notes_list = len(meaningful_blocks)
 
-    fnClassifier = FinancialNotesClassifier()
-    identifiedNotes = fnClassifier.classify_financial_notes(
+    rules_file_path_financial_notes = os.path.join(base_dir, 'rules', 'financial_notes_rules.json')
+    fnClassifier = FinancialNotesClassifier(rules_file_path=rules_file_path_financial_notes)
+    identifiedNotesList = fnClassifier.classify(
         meaningful_blocks,
-        start_block_index = start_index_for_notes_list,
+        start_block_index_in_list=start_index_for_notes_list, # list index
         confidence_threshold=0.3,
-        debug=DEBUG_MODE_ENABLED
+        max_start_block_index_to_check=1000
     )
-    if DEBUG_MODE_ENABLED:
-        fnClassifier.display_financial_notes_results(identifiedNotes, meaningful_blocks)
+
+    fnClassifier.display_results(identifiedNotesList, meaningful_blocks) # Display results
     logger.info("Notes to Financial Statement analysis complete!")
     logger.debug("\n" + "="*60)
 
     # --- Financial Notes Section Generation ---
-    if identifiedNotes:
-        for note in identifiedNotes:
+    if identifiedNotesList:
+        for note in identifiedNotesList:
             generator.add_note_section(
-                section_header="Notes to Financial Statements",
+                section_header=note.get('section_header', "Notes to Financial Statements"),
                 note_number=note['note_number'],
                 note_title=note['note_title'],
                 start_block=note['start_block'],
@@ -212,13 +216,12 @@ def main():
                 confidence_rate=note['confidence_rate']
             )
     else:
-        logger.info("No financial notes identified.")
+        logger.info("No financial notes identified to add to generator.")
 
 
     # --- Final Output ---
     financialSections = generator.get_sections()
     logger.info(f"Final Financial Sections JSON:\n{financialSections}")
-
 
 if __name__ == "__main__":
     main()

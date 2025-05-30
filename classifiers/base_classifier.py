@@ -38,7 +38,7 @@ class BaseClassifier(ABC):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 loaded_rules = json.load(f)
-                logger.info(f"Successfully loaded rules for {self.__class__.__name__} from {file_path}")
+                logger.debug(f"Successfully loaded rules for {self.__class__.__name__} from {file_path}")
                 return loaded_rules
         except FileNotFoundError:
             logger.error(f"Rules file not found: {file_path} for {self.__class__.__name__}")
@@ -68,22 +68,22 @@ class BaseClassifier(ABC):
         Displays the classification results.
         """
         section_name = classification_result.get("section_name", "N/A") if classification_result else "N/A"
-        logger.info(f"\n{section_name.upper()} CLASSIFICATION RESULTS:")
-        logger.info("-" * 40)
+        logger.debug(f"\n{section_name.upper()} CLASSIFICATION RESULTS:")
+        logger.debug("-" * 40)
 
         if classification_result:
-            logger.info(f" Section identified: {classification_result.get('section_name', 'N/A')}")
+            logger.debug(f" Section identified: {classification_result.get('section_name', 'N/A')}")
             confidence = classification_result.get('confidence', 0.0)
             raw_score = classification_result.get('raw_score', 0)
             num_blocks = classification_result.get('num_blocks', 0)
             start_idx = classification_result.get('start_block_index', 'N/A')
             end_idx = classification_result.get('end_block_index', 'N/A')
 
-            logger.info(f"  Confidence: {confidence:.3f}")
-            logger.info(f"  Raw score: {raw_score}")
-            logger.info(f"  Number of blocks: {num_blocks}")
-            logger.info(f"  Start Block Index: {start_idx}")
-            logger.info(f"  End Block Index: {end_idx}")
+            logger.debug(f"  Confidence: {confidence:.3f}")
+            logger.debug(f"  Raw score: {raw_score}")
+            logger.debug(f"  Number of blocks: {num_blocks}")
+            logger.debug(f"  Start Block Index: {start_idx}")
+            logger.debug(f"  End Block Index: {end_idx}")
 
             if logger.isEnabledFor(logging.DEBUG):
                 breakdown = classification_result.get('breakdown', {})
