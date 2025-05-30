@@ -533,11 +533,12 @@ class SoFPClassifier:
         return {"total": total_score, "breakdown": breakdown}
 
     def classify_sofp_section(self, doc_blocks: List[Dict],
-                          confidence_threshold: float = 0.6,
-                          max_start_block_index_to_check: int = 600,
-                          debug: bool = False) -> Optional[Dict[str, Any]]:
+                              start_block_index: int = 0,
+                              confidence_threshold: float = 0.6,
+                              max_start_block_index_to_check: int = 600,
+                              debug: bool = False) -> Optional[Dict[str, Any]]:
         # This is the index for iterating through the doc_blocks LIST
-        i = 0
+        i = start_block_index
         while i < len(doc_blocks):
             start_block_candidate = doc_blocks[i]
             # keep track of the start of this attempt
