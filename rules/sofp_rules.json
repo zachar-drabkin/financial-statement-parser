@@ -1,0 +1,165 @@
+{
+    "max_score_exemplar": 29,
+    "title_phrases": {
+        "keywords": [
+            "STATEMENT OF FINANCIAL POSITION", "BALANCE SHEET",
+            "CONSOLIDATED STATEMENT OF FINANCIAL POSITION", "CONSOLIDATED BALANCE SHEETS",
+            "CONDENSED CONSOLIDATED STATEMENT OF FINANCIAL POSITION", "CONDENSED CONSOLIDATED BALANCE SHEET",
+            "CONSOLIDATED STATEMENT OF CONDITION", "STATEMENT OF CONDITION",
+            "STATEMENT OF NET WORTH",
+            "UNAUDITED INTERIM CONDENSED CONSOLIDATED FINANCIAL STATEMENTS"
+        ],
+        "score": 4,
+        "length_check_buffer": 20
+    },
+    "major_section_keywords": {
+        "assets": ["ASSETS", "TOTAL ASSETS"],
+        "liabilities": ["LIABILITIES", "TOTAL LIABILITIES"],
+        "equity": [
+            "EQUITY", "SHAREHOLDERS' EQUITY", "STOCKHOLDERS' EQUITY",
+            "OWNERS' EQUITY", "MEMBERS' EQUITY", "PARTNERS' CAPITAL",
+            "CAPITAL", "CAPITAL AND RESERVES", "NET ASSETS", "FUND BALANCE",
+            "EQUITY ATTRIBUTABLE TO OWNERS OF THE PARENT",
+            "TOTAL EQUITY", "TOTAL SHAREHOLDERS' EQUITY", "TOTAL STOCKHOLDERS' EQUITY"
+        ],
+        "combined_liabilities_equity": [
+            "LIABILITIES AND EQUITY", "LIABILITIES AND STOCKHOLDERS' EQUITY",
+            "LIABILITIES AND SHAREHOLDERS' EQUITY"
+        ],
+        "score_per_section": 1,
+        "max_score": 3
+    },
+    "asset_keywords": {
+        "keywords": [
+            "CASH AND CASH EQUIVALENTS", "CASH", "ACCOUNTS RECEIVABLE", "TRADE RECEIVABLES", "RECEIVABLES", "DEBTORS",
+            "INVENTORY", "INVENTORIES", "STOCKS", "MARKETABLE SECURITIES", "SHORT-TERM INVESTMENTS",
+            "PREPAID EXPENSES", "PREPAYMENTS", "OTHER CURRENT ASSETS", "PROPERTY, PLANT, AND EQUIPMENT", "PPE",
+            "FIXED ASSETS", "TANGIBLE FIXED ASSETS", "LAND", "BUILDINGS", "EQUIPMENT", "ACCUMULATED DEPRECIATION",
+            "LONG-TERM INVESTMENTS", "INVESTMENTS IN ASSOCIATES", "INTANGIBLE ASSETS", "GOODWILL", "PATENTS",
+            "TRADEMARKS", "DEFERRED TAX ASSETS", "RIGHT-OF-USE ASSETS", "LEASED ASSETS", "INVESTMENT PROPERTY",
+            "BIOLOGICAL ASSETS", "ASSETS HELD FOR SALE", "CURRENT ASSETS", "NON-CURRENT ASSETS", "LONG-TERM ASSETS",
+            "LOANS AND ADVANCES TO CUSTOMERS", "TRADING ASSETS", "CASH AND BALANCES WITH CENTRAL BANKS"
+        ],
+        "max_score": 3,
+        "count_for_max_score": 5
+    },
+    "liability_keywords": {
+        "keywords": [
+            "ACCOUNTS PAYABLE", "TRADE PAYABLES", "CREDITORS", "SHORT-TERM DEBT", "SHORT-TERM BORROWINGS",
+            "NOTES PAYABLE", "ACCRUED EXPENSES", "ACCRUED LIABILITIES", "UNEARNED REVENUE", "DEFERRED REVENUE",
+            "INCOME TAXES PAYABLE", "CURRENT TAX PAYABLE", "CURRENT PORTION OF LONG-TERM DEBT",
+            "DIVIDENDS PAYABLE", "OTHER CURRENT LIABILITIES", "LONG-TERM DEBT", "BONDS PAYABLE",
+            "DEFERRED TAX LIABILITIES", "PENSION OBLIGATIONS", "LEASE OBLIGATIONS", "PROVISIONS",
+            "CURRENT LIABILITIES", "NON-CURRENT LIABILITIES", "LONG-TERM LIABILITIES",
+            "DEPOSITS FROM CUSTOMERS", "DEBT SECURITIES IN ISSUE",
+            "INSURANCE CONTRACT LIABILITIES"
+        ],
+        "max_score": 3,
+        "count_for_max_score": 5
+    },
+    "equity_keywords": {
+        "keywords": [
+            "SHARE CAPITAL", "COMMON STOCK", "PREFERRED STOCK", "CAPITAL STOCK", "ISSUED CAPITAL",
+            "ADDITIONAL PAID-IN CAPITAL", "SHARE PREMIUM", "RETAINED EARNINGS", "ACCUMULATED PROFIT",
+            "ACCUMULATED DEFICIT", "REVALUATION RESERVE", "HEDGING RESERVE",
+            "FOREIGN CURRENCY TRANSLATION RESERVE", "OTHER RESERVES",
+            "ACCUMULATED OTHER COMPREHENSIVE INCOME", "AOCI",
+            "TREASURY STOCK", "TREASURY SHARES", "NON-CONTROLLING INTERESTS", "NCI", "MINORITY INTEREST",
+            "OWNER'S CAPITAL ACCOUNT", "PARTNER'S CAPITAL ACCOUNT"
+        ],
+        "max_score": 3,
+        "count_for_max_score": 4
+    },
+    "total_indicator_keywords": {
+        "keywords": [
+            "TOTAL ASSETS", "TOTAL LIABILITIES", "TOTAL EQUITY", "TOTAL SHAREHOLDERS' EQUITY",
+            "TOTAL STOCKHOLDERS' EQUITY", "TOTAL NET ASSETS", "TOTAL CAPITAL AND RESERVES",
+            "TOTAL LIABILITIES AND EQUITY", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY",
+            "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY",
+            "TOTAL CURRENT ASSETS", "TOTAL NON-CURRENT ASSETS", "TOTAL LONG-TERM ASSETS",
+            "TOTAL CURRENT LIABILITIES", "TOTAL NON-CURRENT LIABILITIES", "TOTAL LONG-TERM LIABILITIES"
+        ],
+        "critical_totals_for_balance_check": ["TOTAL ASSETS", "TOTAL LIABILITIES", "TOTAL EQUITY", "TOTAL LIABILITIES AND EQUITY"],
+        "max_score": 3,
+        "count_for_max_score": 3
+    },
+    "structural_cues": {
+        "comparative_year_pattern": "\\b(19|20)\\d{2}\\b",
+        "note_column_keywords": ["\\bNOTE[S]?\\b", "\\bREF\\.?\\b"],
+        "currency_indicators": [
+            "\\$\\s*\\d+", "€\\s*\\d+", "£\\s*\\d+", "¥\\s*\\d+",
+            "\\(\\s*IN\\s+(THOUSANDS|MILLIONS|BILLIONS)\\s*\\)",
+            "\\b(USD|EUR|GBP|CAD|AUD)\\b"
+        ],
+        "score": 2,
+        "score_comparative_years": 1,
+        "score_notes_or_currency": 1
+    },
+    "balancing_equation": {
+        "score": 5,
+        "relative_tolerance": 1e-5,
+        "absolute_tolerance": 0.51,
+        "total_assets_labels": ["TOTAL ASSETS"],
+        "total_liabilities_labels": ["TOTAL LIABILITIES"],
+        "total_equity_labels": [
+            "TOTAL SHAREHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL SHAREHOLDERS' EQUITY (DEFICIENCY)",
+            "TOTAL SHAREHOLDERS’ EQUITY", "TOTAL SHAREHOLDERS' EQUITY",
+            "TOTAL STOCKHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL STOCKHOLDERS' EQUITY (DEFICIENCY)",
+            "TOTAL STOCKHOLDERS’ EQUITY", "TOTAL STOCKHOLDERS' EQUITY",
+            "TOTAL EQUITY (DEFICIENCY)", "TOTAL EQUITY"
+        ],
+        "total_liabilities_and_equity_labels": [
+            "TOTAL LIABILITIES AND SHAREHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY (DEFiciency)",
+            "TOTAL LIABILITIES AND SHAREHOLDERS’ EQUITY", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY",
+            "TOTAL LIABILITIES AND STOCKHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY (DEFICIENCY)",
+            "TOTAL LIABILITIES AND STOCKHOLDERS’ EQUITY", "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY",
+            "TOTAL LIABILITIES AND EQUITY (DEFICIENCY)", "TOTAL LIABILITIES AND EQUITY"
+        ]
+    },
+    "hard_termination_section_starters": {
+        "keywords": [
+            "STATEMENT OF INCOME", "INCOME STATEMENT", "STATEMENT OF EARNINGS",
+            "STATEMENT OF OPERATIONS", "PROFIT AND LOSS ACCOUNT", "STATEMENT OF PROFIT OR LOSS",
+            "CONSOLIDATED STATEMENT OF PROFIT OR LOSS",
+            "CONSOLIDATED STATEMENT OF PROFIT OR LOSS AND OTHER COMPREHENSIVE INCOME",
+            "STATEMENT OF COMPREHENSIVE INCOME", "STATEMENT OF OTHER COMPREHENSIVE INCOME",
+            "CONSOLIDATED STATEMENT OF COMPREHENSIVE INCOME",
+            "STATEMENT OF CASH FLOWS", "CASH FLOW STATEMENT", "CONSOLIDATED STATEMENT OF CASH FLOWS",
+            "STATEMENT OF CHANGES IN EQUITY", "STATEMENT OF SHAREHOLDERS' EQUITY",
+            "STATEMENT OF STOCKHOLDERS' EQUITY", "STATEMENT OF RETAINED EARNINGS",
+            "CONSOLIDATED STATEMENT OF CHANGES IN EQUITY",
+            "NOTES TO FINANCIAL STATEMENTS", "NOTES TO THE FINANCIAL STATEMENTS",
+            "NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS",
+            "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+            "ACCOMPANYING NOTES TO THE FINANCIAL STATEMENTS",
+            "INDEPENDENT AUDITOR'S REPORT", "AUDITOR'S REPORT", "REPORT OF INDEPENDENT AUDITOR",
+            "REPORT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM",
+            "MANAGEMENT DISCUSSION AND ANALYSIS", "MD&A", "MANAGEMENT'S DISCUSSION AND ANALYSIS",
+            "MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS",
+            "REPORT OF THE DIRECTORS", "DIRECTORS' REPORT", "CHAIRMAN'S STATEMENT", "CEO REPORT",
+            "STATUTORY DECLARATION"
+        ],
+        "regex_patterns": [
+            "STATEMENTS?\\s+OF\\s+(FINANCIAL\\s+POSITION|CONDITION)\\b",
+            "STATEMENTS?\\s+OF\\s+(OPERATIONS|EARNINGS|INCOME)\\b",
+            "STATEMENTS?\\s+OF\\s+COMPREHENSIVE\\s+INCOME\\b",
+            "STATEMENTS?\\s+OF\\s+CASH\\s+FLOWS?\\b",
+            "STATEMENTS?\\s+OF\\s+CHANGES\\s+IN\\s+(SHAREHOLDERS['’]?\\s+|STOCKHOLDERS['’]?\\s+)?EQUITY\\b",
+            "NOTES\\s+TO\\s+(THE\\s+)?(CONSOLIDATED\\s+)?FINANCIAL\\s+STATEMENTS\\b",
+            "^\\s*(?:NOTE\\s+)?(?:\\d+|(?:\\([a-zA-Z0-9]+\\)))\\s*[\\.:\\-‐]?\\s*(?:[A-Z][A-Za-z\\s,'&\\(\\)\\/\\-]{2,})"
+        ],
+        "content_indicator_regex_for_period_statements": [
+            "FOR\\s+THE\\s+YEAR(S)?\\s+ENDED",
+            "YEAR(S)?\\s+ENDED",
+            "FOR\\s+THE\\s+PERIOD\\s+ENDED",
+            "PERIOD\\s+ENDED",
+            "FOR\\s+THE\\s+\\w+\\s+MONTHS?\\s+ENDED"
+        ]
+    },
+    "block_bonus_max_index": 60,
+    "block_bonus_score": 1,
+    "combination_bonus_score": 1,
+    "strong_table_min_major_sections": 2,
+    "strong_table_min_total_indicators": 1,
+    "strong_table_min_structural_cues": 1
+}

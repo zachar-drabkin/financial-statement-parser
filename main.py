@@ -45,8 +45,8 @@ def main():
 
     logger.info(f"Found {len(meaningful_blocks)} meaningful blocks from parser.")
 
-    # --- Block Structure Validation (for debugging) ---
-    if DEBUG_MODE_ENABLED and meaningful_blocks: # Or: if logger.isEnabledFor(logging.DEBUG):
+    # --- Block Structure Validation ---
+    if DEBUG_MODE_ENABLED and meaningful_blocks:
         first_block = meaningful_blocks[0]
         if not all(key in first_block for key in ['index', 'content', 'type']):
             logger.error("\nERROR: Parsed blocks do not have required keys: 'index', 'content', 'type'.")
@@ -62,7 +62,7 @@ def main():
 
     # --- Cover Page Classification ---
     rules_file_path_cover_page = os.path.join(base_dir, 'rules', 'cover_page_rules.json')
-    cpClassifier = CoverPageClassifier(rules_file_path_cover_page)
+    cpClassifier = CoverPageClassifier(rules_file_path=rules_file_path_cover_page)
 
     cover_page_info = cpClassifier.classify(
         meaningful_blocks,
@@ -74,7 +74,7 @@ def main():
     logger.info("Cover Page analysis complete!")
     logger.debug("\n" + "="*60)
 
-    # --- Section Generation ---
+    # --- Cover Page Section Generation ---
     if cover_page_info:
         generator.add_normalized_section(
             section_header="Cover Page",
@@ -86,26 +86,35 @@ def main():
     else:
         logger.warning("Cover page not identified; cannot add to section generator.")
 
-
     # --- Statement of Financial Position (SoFP) Classification ---
-    start_index_for_sofp = 0
+    start_index_for_sofp_doc = 0 # Document index where SoFP starts
+    start_index_for_sofp_list = 0 # List index in meaningful_blocks
     if cover_page_info:
-        start_index_for_sofp = cover_page_info['end_block_index'] + 1
+        start_index_for_sofp_doc = cover_page_info['end_block_index'] + 1
+        # find the corresponding list index for the doc index
+        for idx, block in enumerate(meaningful_blocks):
+            if block['index'] >= start_index_for_sofp_doc:
+                start_index_for_sofp_list = idx
+                break
+        else: # i all blocks are part of cover page or no blocks left
+            start_index_for_sofp_list = len(meaningful_blocks)
 
-    sofpClassifier = SoFPClassifier()
-    sofpc_info = sofpClassifier.classify_sofp_section(
+    rules_file_path_sofp = os.path.join(base_dir, 'rules', 'sofp_rules.json')
+    sofpClassifier = SoFPClassifier(rules_file_path=rules_file_path_sofp)
+    sofpc_info = sofpClassifier.classify( # Changed method name
         meaningful_blocks,
-        start_block_index=start_index_for_sofp,
+        # Pass the list index for where to start in doc_blocks
+        start_block_index_in_list=start_index_for_sofp_list, # Custom kwarg for classify
         confidence_threshold=0.5,
-        max_start_block_index_to_check=500,
-        debug=DEBUG_MODE_ENABLED
+        max_start_block_index_to_check=500
+        # No 'debug' argument needed
     )
 
-    if DEBUG_MODE_ENABLED :
-        sofpClassifier.display_sofp_results(sofpc_info, meaningful_blocks)
+    sofpClassifier.display_results(sofpc_info, meaningful_blocks) # Display results
     logger.info("Statement of Financial Position analysis complete!")
     logger.debug("\n" + "="*60)
 
+    # --- Statement of Financial Position Generation ---
     if sofpc_info:
         generator.add_normalized_section(
             section_header="Statement of Financial Position",
@@ -117,19 +126,25 @@ def main():
     else:
         logger.warning("SoFP not identified; cannot add to section generator.")
 
-
     # --- Statement of Comprehensive Income (SoCI) Classification ---
-    start_index_for_soci = 0
+    start_index_for_soci_doc = 0
+    start_index_for_soci_list = 0
     if sofpc_info:
-        start_index_for_soci = sofpc_info['end_block_index'] + 1
-    elif cover_page_info : # Fallback if SoFP not found
-        start_index_for_soci = cover_page_info['end_block_index'] + 1
+        start_index_for_soci_doc = sofpc_info['end_block_index'] + 1
+    elif cover_page_info:
+        start_index_for_soci_doc = cover_page_info['end_block_index'] + 1
 
+    for idx, block in enumerate(meaningful_blocks):
+        if block['index'] >= start_index_for_soci_doc:
+            start_index_for_soci_list = idx
+            break
+    else:
+        start_index_for_soci_list = len(meaningful_blocks)
 
     sociClassifier = SoCIClassifier()
     socicInfo = sociClassifier.classify_soci_section(
         meaningful_blocks,
-        start_block_index=start_index_for_soci,
+        start_block_index=start_index_for_soci_list,
         confidence_threshold=0.5,
         max_start_block_index_to_check=500,
         debug=DEBUG_MODE_ENABLED
@@ -139,6 +154,7 @@ def main():
     logger.info("Statement of Comprehensive Income analysis complete!")
     logger.debug("\n" + "="*60)
 
+    # --- Statement of Comprehensive Income Generation ---
     if socicInfo:
         generator.add_normalized_section(
             section_header="Statement of Comprehensive Income",
@@ -151,28 +167,35 @@ def main():
         logger.warning("SoCI not identified; cannot add to section generator.")
 
     # --- Financial Notes Classification ---
-    start_index_for_notes = 0
+    start_index_for_notes_doc = 0
+    start_index_for_notes_list = 0
     if socicInfo:
-        start_index_for_notes = socicInfo['end_block_index'] + 1
-    elif sofpc_info :
-        start_index_for_notes = sofpc_info['end_block_index'] + 1
+        start_index_for_notes_doc = socicInfo['end_block_index'] + 1
+    elif sofpc_info:
+        start_index_for_notes_doc = sofpc_info['end_block_index'] + 1
     elif cover_page_info:
-        start_index_for_notes = cover_page_info['end_block_index'] + 1
+        start_index_for_notes_doc = cover_page_info['end_block_index'] + 1
 
+    for idx, block in enumerate(meaningful_blocks):
+        if block['index'] >= start_index_for_notes_doc:
+            start_index_for_notes_list = idx
+            break
+    else:
+        start_index_for_notes_list = len(meaningful_blocks)
 
     fnClassifier = FinancialNotesClassifier()
     identifiedNotes = fnClassifier.classify_financial_notes(
         meaningful_blocks,
-        start_block_index = start_index_for_notes,
+        start_block_index = start_index_for_notes_list,
         confidence_threshold=0.3,
         debug=DEBUG_MODE_ENABLED
     )
-
-    if DEBUG_MODE_ENABLED:
+    if DEBUG_MODE_ENABLED: 
         fnClassifier.display_financial_notes_results(identifiedNotes, meaningful_blocks)
     logger.info("Notes to Financial Statement analysis complete!")
     logger.debug("\n" + "="*60)
 
+    # --- Financial Notes Section Generation ---
     if identifiedNotes:
         for note in identifiedNotes:
             generator.add_note_section(
