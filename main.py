@@ -1,10 +1,10 @@
 from typing import Dict, List, Optional, Any
 from docx_parser import DocxParser
-from cover_page_classifier import CoverPageClassifier
-from section_generator import SectionGenerator
-from sofp_classifier import SoFPClassifier
-from soci_classifier import SoCIClassifier
-from financial_notes_classifier import FinancialNotesClassifier
+from utils.section_generator import SectionGenerator
+from classifiers.cover_page_classifier import CoverPageClassifier
+from classifiers.sofp_classifier import SoFPClassifier
+from classifiers.soci_classifier import SoCIClassifier
+from classifiers.financial_notes_classifier import FinancialNotesClassifier
 
 debug = False  # set to True for extensive debugging output
 

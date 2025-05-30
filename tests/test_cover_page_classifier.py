@@ -1,5 +1,5 @@
 import pytest
-from src.cover_page_classifier import CoverPageClassifier
+from classifiers.cover_page_classifier import CoverPageClassifier
 
 def test_classifier():
     """Test the enhanced classifier with sample content"""
