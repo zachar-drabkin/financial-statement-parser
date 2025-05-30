@@ -1,0 +1,91 @@
+{
+    "max_score_exemplar": 154,
+    "section_name": "Statement of Comprehensive Income",
+    "soci_titles": {
+        "ifrs_primary": [
+            {"text": "STATEMENT OF PROFIT OR LOSS AND OTHER COMPREHENSIVE INCOME", "score": 10, "type": "ifrs_combined_soci"},
+            {"text": "STATEMENT OF COMPREHENSIVE INCOME", "score": 9, "type": "ifrs_oci_focused_or_gaap_with_oci"},
+            {"text": "STATEMENT OF PROFIT OR LOSS", "score": 8, "type": "ifrs_pl"}
+        ],
+        "gaap_primary": [
+            {"text": "INCOME STATEMENT", "score": 9, "type": "gaap_income_statement"},
+            {"text": "STATEMENT OF OPERATIONS", "score": 8, "type": "gaap_operations"},
+            {"text": "STATEMENT OF EARNINGS", "score": 8, "type": "gaap_earnings"},
+            {"text": "CONSOLIDATED INCOME STATEMENT", "score": 9, "type": "gaap_income_statement_cons"},
+            {"text": "CONSOLIDATED STATEMENTS OF INCOME", "score": 9, "type": "gaap_income_statement_cons"},
+            {"text": "CONSOLIDATED STATEMENT OF OPERATIONS", "score": 8, "type": "gaap_operations_cons"},
+            {"text": "CONSOLIDATED STATEMENTS OF OPERATIONS", "score": 8, "type": "gaap_operations_cons"},
+            {"text": "CONSOLIDATED STATEMENT OF EARNINGS", "score": 8, "type": "gaap_earnings_cons"},
+            {"text": "CONSOLIDATED STATEMENTS OF EARNINGS", "score": 8, "type": "gaap_earnings_cons"},
+            {"text": "CONSOLIDATED STATEMENT OF COMPREHENSIVE INCOME", "score": 9, "type": "ifrs_oci_focused_or_gaap_with_oci_cons"},
+            {"text": "CONSOLIDATED STATEMENTS OF COMPREHENSIVE INCOME", "score": 9, "type": "ifrs_oci_focused_or_gaap_with_oci_cons"}
+        ],
+        "shared_ambiguous": [
+            {"text": "STATEMENT OF (LOSS)", "score": 5, "type": "ambiguous_loss"},
+            {"text": "STATEMENT OF LOSS", "score": 5, "type": "ambiguous_loss_direct"},
+            {"text": "PROFIT AND LOSS ACCOUNT", "score": 6, "type": "legacy_pl"},
+            {"text": "STATEMENTS OF LOSS AND COMPREHENSIVE LOSS", "score": 7, "type": "gaap_loss_statement_cons"}
+        ],
+        "length_check_buffer": 30,
+        "min_title_score_paragraph_start": 4,
+        "indicative_terms_in_title_paragraph": ["INCOME", "PROFIT", "LOSS", "EARNINGS", "OPERATIONS", "COMPREHENSIVE"]
+    },
+    "pl_keywords": {
+        "revenue": [{"text": "REVENUE", "score": 10}, {"text": "SALES", "score": 10}, {"text": "NET SALES", "score": 10}, {"text": "TURNOVER", "score": 9}, {"text": "TOTAL REVENUES", "score": 10}],
+        "cogs": [{"text": "COST OF SALES", "score": 7}, {"text": "COST OF GOODS SOLD", "score": 7}, {"text": "COST OF REVENUE", "score": 7}],
+        "gross_profit": [{"text": "GROSS PROFIT", "score": 8}, {"text": "GROSS MARGIN", "score": 7}, {"text": "GROSS LOSS", "score": 8}],
+        "operating_income": [{"text": "OPERATING INCOME", "score": 8}, {"text": "INCOME FROM OPERATIONS", "score": 8}, {"text": "PROFIT FROM OPERATIONS", "score": 8}, {"text": "OPERATING PROFIT", "score": 8}, {"text": "LOSS FROM OPERATIONS", "score": 8}, {"text": "OPERATING LOSS", "score": 8}],
+        "operating_expenses": [{"text": "OPERATING EXPENSES", "score": 6}, {"text": "SELLING, GENERAL AND ADMINISTRATIVE EXPENSES", "score": 5}, {"text": "SG&A", "score": 5}, {"text": "RESEARCH AND DEVELOPMENT EXPENSES", "score": 5}, {"text": "R&D", "score": 5}],
+        "finance_costs_income": [{"text": "FINANCE COSTS", "score": 6}, {"text": "INTEREST EXPENSE", "score": 6}, {"text": "FINANCE INCOME", "score": 6}, {"text": "INTEREST INCOME", "score": 6}, {"text": "FINANCE INCOME (EXPENSE), NET", "score": 6}],
+        "pre_tax_income": [{"text": "INCOME BEFORE TAX", "score": 8}, {"text": "PROFIT BEFORE TAX", "score": 8}, {"text": "EARNINGS BEFORE INCOME TAXES", "score": 8}, {"text": "LOSS BEFORE TAX", "score": 8}],
+        "tax": [{"text": "INCOME TAX EXPENSE", "score": 7}, {"text": "PROVISION FOR INCOME TAXES", "score": 7}, {"text": "TAX EXPENSE", "score": 7}, {"text": "INCOME TAX BENEFIT", "score": 7}, {"text": "DEFERRED INCOME TAX", "score": 5}],
+        "net_income": [{"text": "NET INCOME", "score": 10}, {"text": "NET EARNINGS", "score": 10}, {"text": "NET LOSS", "score": 10}, {"text": "PROFIT FOR THE PERIOD", "score": 10}, {"text": "LOSS FOR THE PERIOD", "score": 10}, {"text": "PROFIT ATTRIBUTABLE TO OWNERS", "score": 9}],
+        "other_pl_specific_items": [{"text": "DEBT FORGIVENESS", "score": 3}, {"text": "GAIN ON FOREIGN EXCHANGE", "score": 3}, {"text": "UNREALIZED GAIN ON MARKETABLE SECURITIES", "score": 4}, {"text": "GAIN ON SALE OF TESTCO PROPERTIES", "score": 4}, {"text": "LOSS ON ROCKET PROJECT TRANSACTIONS", "score": 4}],
+        "other_pl_generic_items": [{"text": "DEPRECIATION EXPENSE", "score": 4}, {"text": "AMORTIZATION EXPENSE", "score": 4}, {"text": "OTHER INCOME", "score": 3}, {"text": "OTHER EXPENSE", "score": 3}, {"text": "SHARE OF PROFIT OF ASSOCIATES", "score": 4}, {"text": "SHARE OF LOSS OF ASSOCIATES", "score": 4}],
+        "critical_item_missing_penalty_divisor": 3,
+        "min_pl_score_for_critical_item_penalty": 10
+    },
+    "oci_keywords": {
+        "headers": [{"text": "OTHER COMPREHENSIVE INCOME", "score": 8}, {"text": "OTHER COMPREHENSIVE (LOSS)", "score": 8}, {"text": "COMPONENTS OF OTHER COMPREHENSIVE INCOME", "score": 7}],
+        "classification_headers": [{"text": "ITEMS THAT MAY BE RECLASSIFIED SUBSEQUENTLY TO PROFIT OR LOSS", "score": 6}, {"text": "ITEMS THAT WILL NOT BE RECLASSIFIED SUBSEQUENTLY TO PROFIT OR LOSS", "score": 6}],
+        "items": [{"text": "EXCHANGE DIFFERENCES ON TRANSLATING FOREIGN OPERATIONS", "score": 7}, {"text": "FOREIGN CURRENCY TRANSLATION ADJUSTMENTS", "score": 7}, {"text": "CURRENCY TRANSLATION DIFFERENCES", "score": 7}, {"text": "UNREALIZED GAINS AND LOSSES ON DEBT INVESTMENTS AT FVOCI", "score": 7}, {"text": "UNREALIZED GAINS AND LOSSES ON EQUITY INVESTMENTS AT FVOCI", "score": 7}, {"text": "AVAILABLE-FOR-SALE FINANCIAL ASSETS", "score": 6}, {"text": "REVALUATION SURPLUS", "score": 6}, {"text": "REMEASUREMENTS OF DEFINED BENEFIT PENSION PLANS", "score": 7}, {"text": "ACTUARIAL GAINS AND LOSSES ON DEFINED BENEFIT PLANS", "score": 7}, {"text": "EFFECTIVE PORTION OF GAINS AND LOSSES ON HEDGING INSTRUMENTS", "score": 6}],
+        "aggregations": [{"text": "TOTAL OTHER COMPREHENSIVE INCOME", "score": 7}, {"text": "TOTAL OTHER COMPREHENSIVE LOSS", "score": 7}, {"text": "TOTAL COMPREHENSIVE INCOME", "score": 8}, {"text": "TOTAL COMPREHENSIVE LOSS", "score": 8}, {"text": "COMPREHENSIVE INCOME", "score": 8}, {"text": "COMPREHENSIVE LOSS", "score": 8}],
+        "min_oci_header_score_for_extension": 5,
+        "min_total_oci_score_for_extension_stop": 15
+    },
+    "structural_cues": {
+        "period_indicators_keywords": [{"text": "FOR THE YEAR ENDED", "score": 5}, {"text": "FOR THE YEARS ENDED", "score": 5}, {"text": "YEARS ENDED DECEMBER 31", "score": 5}, {"text": "YEAR ENDED", "score": 5}, {"text": "ENDED", "score": 3}, {"text": "FOR THE THREE MONTHS ENDED", "score": 4}],
+        "period_indicators_patterns": ["\\b(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\\s+\\d{1,2},\\s+(?:19|20)\\d{2}\\b", "\\b\\d{1,2}\\s+(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\\s+(?:19|20)\\d{2}\\b", "\\b(?:19|20)\\d{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])\\b"],
+        "period_pattern_score": 5,
+        "year_pattern": "\\b(19|20)\\d{2}\\b",
+        "comparative_year_score": 5,
+        "single_year_score": 2,
+        "currency_keywords": [{"text": "EXPRESSED IN", "score": 2}, {"text": "AMOUNTS IN", "score": 2}, {"text": "THOUSANDS", "score": 1}, {"text": "MILLIONS", "score": 1}],
+        "currency_iso_codes": ["USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF"],
+        "currency_iso_code_score": 2,
+        "currency_symbols": ["$", "€", "£", "¥"],
+        "currency_symbol_score": 1
+    },
+    "eps_discontinued_ops": [{"text": "EARNINGS PER SHARE", "score": 5}, {"text": "NET LOSS PER SHARE", "score": 5}, {"text": "BASIC AND DILUTED", "score": 2}, {"text": "BASIC EARNINGS PER SHARE", "score": 5}, {"text": "DILUTED EARNINGS PER SHARE", "score": 5}, {"text": "BASIC EPS", "score": 4}, {"text": "WEIGHTED AVERAGE NUMBER OF COMMON SHARES", "score": 3}, {"text": "DISCONTINUED OPERATIONS", "score": 5}, {"text": "INCOME FROM DISCONTINUED OPERATIONS", "score": 5}],
+    "termination_keywords": {
+        "statement_titles": ["STATEMENT OF FINANCIAL POSITION", "CONSOLIDATED STATEMENT OF FINANCIAL POSITION", "BALANCE SHEET", "CONSOLIDATED BALANCE SHEETS", "STATEMENT OF CASH FLOWS", "CONSOLIDATED STATEMENT OF CASH FLOWS", "CASH FLOW STATEMENT", "STATEMENT OF CHANGES IN EQUITY", "CONSOLIDATED STATEMENT OF CHANGES IN EQUITY", "STATEMENT OF CHANGES IN SHAREHOLDERS' EQUITY", "STATEMENT OF STOCKHOLDERS' EQUITY", "NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS", "NOTES TO FINANCIAL STATEMENTS", "NOTES TO THE FINANCIAL STATEMENTS", "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS"],
+        "other_sections": ["AUDITOR'S REPORT", "INDEPENDENT AUDITOR'S REPORT", "MANAGEMENT DISCUSSION AND ANALYSIS", "MANAGEMENT'S DISCUSSION AND ANALYSIS", "MD&A"],
+        "note_section_patterns": ["^\\s*(?:NOTE\\s+)?\\d+\\s*[\\.:\\-‐]?\\s*[A-Z][A-Z0-9\\s,'&\\(\\)\\/\\-]{5,}", "^\\s*\\d+\\.\\s*(NATURE OF OPERATIONS|BASIS OF PREPARATION|SIGNIFICANT ACCOUNTING POLICIES)"],
+        "title_buffer_for_termination_check": 60,
+        "section_header_buffer_for_termination_check": 80
+    },
+    "bonuses_penalties": {
+        "ifrs_two_statement_bonus": 15,
+        "block_bonus_max_index": 30,
+        "block_bonus_score": 5,
+        "combination_bonus_score": 10,
+        "min_title_score_for_combo": 5,
+        "min_pl_score_for_combo": 40,
+        "min_oci_score_if_expected_for_combo": 10,
+        "min_initial_pl_score_for_ifrs_two_statement_check": 40,
+        "confidence_cap_if_critical_pl_missing": 0.2
+    },
+    "general_config":{
+        "max_blocks_in_oci_extension": 5
+    }
+}

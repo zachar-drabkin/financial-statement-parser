@@ -126,31 +126,36 @@ def main():
     else:
         logger.warning("SoFP not identified; cannot add to section generator.")
 
-    # --- Statement of Comprehensive Income (SoCI) Classification ---
+     # --- Statement of Comprehensive Income (SoCI) Classification ---
     start_index_for_soci_doc = 0
     start_index_for_soci_list = 0
-    if sofpc_info:
-        start_index_for_soci_doc = sofpc_info['end_block_index'] + 1
-    elif cover_page_info:
-        start_index_for_soci_doc = cover_page_info['end_block_index'] + 1
 
+    if sofpc_info: # if SoFP was found
+        start_index_for_soci_doc = sofpc_info['end_block_index'] + 1
+    elif cover_page_info: # fallback if SoFP not found - but Cover Page was
+        start_index_for_soci_doc = cover_page_info['end_block_index'] + 1
+    # else: start_index_for_soci_doc remains 0 if no prior section found
+
+    # find corresponding list index for the doc index
     for idx, block in enumerate(meaningful_blocks):
         if block['index'] >= start_index_for_soci_doc:
             start_index_for_soci_list = idx
             break
-    else:
+    else: # if all blocks are part of previous sections or no blocks left
         start_index_for_soci_list = len(meaningful_blocks)
 
-    sociClassifier = SoCIClassifier()
-    socicInfo = sociClassifier.classify_soci_section(
+    # initialize the refactored SoCIClassifier
+    rules_file_path_soci = os.path.join(base_dir, 'rules', 'soci_rules.json')
+    sociClassifier = SoCIClassifier(rules_file_path=rules_file_path_soci)
+    socicInfo = sociClassifier.classify(
         meaningful_blocks,
-        start_block_index=start_index_for_soci_list,
+        start_block_index_in_list=start_index_for_soci_list,
         confidence_threshold=0.5,
         max_start_block_index_to_check=500,
-        debug=DEBUG_MODE_ENABLED
+        max_blocks_in_soci_window=30
     )
-    if DEBUG_MODE_ENABLED:
-        sociClassifier.display_soci_results(socicInfo, meaningful_blocks)
+
+    sociClassifier.display_results(socicInfo, meaningful_blocks)
     logger.info("Statement of Comprehensive Income analysis complete!")
     logger.debug("\n" + "="*60)
 
@@ -190,7 +195,7 @@ def main():
         confidence_threshold=0.3,
         debug=DEBUG_MODE_ENABLED
     )
-    if DEBUG_MODE_ENABLED: 
+    if DEBUG_MODE_ENABLED:
         fnClassifier.display_financial_notes_results(identifiedNotes, meaningful_blocks)
     logger.info("Notes to Financial Statement analysis complete!")
     logger.debug("\n" + "="*60)
