@@ -1,3 +1,5 @@
+import json
+
 class SectionGenerator:
     """
     A class for creating financial statement section objects and arrays.
@@ -32,11 +34,12 @@ class SectionGenerator:
             "confidence_rate": confidence_rate
         }
 
-    def create_note_section(self, note_number, note_title, start_block, end_block, confidence_rate):
+    def create_note_section(self, section_header, note_number, note_title, start_block, end_block, confidence_rate):
         """
         Creates a notes section object with 6 fields.
 
         Args:
+            section_header (string): The display name of the section
             note_number (int): The note number
             note_title (string): The title of the note
             start_block (int): Starting block number
@@ -48,7 +51,7 @@ class SectionGenerator:
         """
 
         return {
-            "section_header": "Notes to Financial Statements",
+            "section_header": section_header,
             "note_number": note_number,
             "note_title": note_title,
             "start_block": start_block,
@@ -56,7 +59,7 @@ class SectionGenerator:
             "confidence_rate": confidence_rate
         }
 
-    def add_normalized_section(self, section_header, normalized_section, start_block, end_block, confidence_rate=None):
+    def add_normalized_section(self, section_header, normalized_section, start_block, end_block, confidence_rate):
         """
         Creates and adds a normalized section to the internal sections list.
 
@@ -76,11 +79,12 @@ class SectionGenerator:
         self.sections.append(section)
         return self
 
-    def add_note_section(self, note_number, note_title, start_block, end_block, confidence_rate=None):
+    def add_note_section(self, section_header, note_number, note_title, start_block, end_block, confidence_rate):
         """
         Creates and adds a note section to the internal sections list.
 
         Args:
+            section_header (string): The display name of the section
             note_number (int): The note number
             note_title (string): The title of the note
             start_block (int): Starting block number
@@ -91,7 +95,7 @@ class SectionGenerator:
             SectionGenerator: Self for method chaining
         """
         section = self.create_note_section(
-            note_number, note_title, start_block, end_block, confidence_rate
+            section_header, note_number, note_title, start_block, end_block, confidence_rate
         )
         self.sections.append(section)
         return self
@@ -103,7 +107,8 @@ class SectionGenerator:
         Returns:
             list: List of section dictionaries
         """
-        return self.sections.copy()
+        json_string = json.dumps(self.sections, indent=2)
+        return json_string
 
     def clear_sections(self):
         """

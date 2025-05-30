@@ -4,23 +4,24 @@ from cover_page_classifier import CoverPageClassifier
 from section_generator import SectionGenerator
 from sofp_classifier import SoFPClassifier
 from soci_classifier import SoCIClassifier
+from financial_notes_classifier import FinancialNotesClassifier
 
-debug = False  # Set to True for debugging output
+debug = False  # set to True for extensive debugging output
 
 def main():
     """Main function to run the enhanced document parser and classifier"""
 
     # Testing file paths - ensure this path is correct or make it configurable
-    docx_file = 'data/financial_statements/BestCo Work Sample v1.0.docx'
+    #docx_file = 'data/financial_statements/BestCo Work Sample v1.0.docx'
     #docx_file = 'data/financial_statements/1933 Work Sample.docx'
-    #docx_file = 'data/financial_statements/PVI Work Sample.docx'
+    docx_file = 'data/financial_statements/PVI Work Sample.docx'
 
     if debug:
         print(f"Processing document: {docx_file}")
         print("=" * 60)
 
     # DocxParser MUST return blocks with 'index', 'content', and 'type'
-    parser = DocxParser(debug)
+    parser = DocxParser(debug=debug)
     meaningful_blocks = parser.parse_document(docx_file)
 
     if not meaningful_blocks:
@@ -115,7 +116,7 @@ def main():
         # display results using the updated function
         sociClassifier.display_soci_results(socicInfo, meaningful_blocks)
         print("\n" + "="*60)
-        print("Statement of Financial Position analysis complete!")
+        print("Statement of Comprehansive Income analysis complete!")
 
     generator.add_normalized_section(
         section_header="Statement of Comprehensive Income",
@@ -124,6 +125,30 @@ def main():
         end_block=socicInfo['end_block_index'],
         confidence_rate=socicInfo['confidence']
     )
+
+    fnClassifier = FinancialNotesClassifier()
+    identifiedNotes = fnClassifier.classify_financial_notes(
+        meaningful_blocks,
+        start_block_index = socicInfo['end_block_index'] + 1,  # Start after SoCI section
+        confidence_threshold=0.3,
+        debug=debug)
+
+    if debug:
+        # display results using the updated function
+        fnClassifier.display_financial_notes_results(identifiedNotes, meaningful_blocks)
+        print("\n" + "="*60)
+        print("Notes to Financial Statement analysis complete!")
+
+    for note in identifiedNotes:
+        # note_number, note_title, start_block, end_block, confidence_rate):
+        generator.add_note_section(
+            section_header="Notes to Financial Statements",
+            note_number=note['note_number'],
+            note_title=note['note_title'],
+            start_block=note['start_block'],
+            end_block=note['end_block'],
+            confidence_rate=note['confidence_rate']
+        )
 
     financialSections = generator.get_sections()
     print(financialSections)
