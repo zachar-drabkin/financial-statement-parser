@@ -1,0 +1,65 @@
+{
+    "max_score_exemplar": 25,
+    "section_name": "Test Statement of Financial Position",
+    "title_phrases": {
+        "keywords": ["TEST BALANCE SHEET", "STATEMENT OF FINANCIAL POSITION TEST"],
+        "score": 4,
+        "length_check_buffer": 20
+    },
+    "major_section_keywords": {
+        "assets": ["TEST ASSETS", "TOTAL TEST ASSETS"],
+        "liabilities": ["TEST LIABILITIES"],
+        "equity": ["TEST EQUITY", "TOTAL TEST EQUITY"],
+        "combined_liabilities_equity": ["TEST LIABILITIES AND EQUITY"],
+        "score_per_section": 1,
+        "max_score": 3
+    },
+    "asset_keywords": {
+        "keywords": ["CASH TEST", "RECEIVABLES TEST", "PPE TEST"],
+        "max_score": 3,
+        "count_for_max_score": 2
+    },
+    "liability_keywords": {
+        "keywords": ["PAYABLES TEST", "DEBT TEST"],
+        "max_score": 2,
+        "count_for_max_score": 2
+    },
+    "equity_keywords": {
+        "keywords": ["SHARE CAPITAL TEST", "RETAINED EARNINGS TEST"],
+        "max_score": 2,
+        "count_for_max_score": 2
+    },
+    "total_indicator_keywords": {
+        "keywords": ["TOTAL TEST ASSETS", "TOTAL TEST LIABILITIES", "TOTAL TEST EQUITY"],
+        "critical_totals_for_balance_check": ["TOTAL TEST ASSETS", "TOTAL TEST LIABILITIES", "TOTAL TEST EQUITY"],
+        "max_score": 3,
+        "count_for_max_score": 2
+    },
+    "structural_cues": {
+        "comparative_year_pattern": "\\b(2022|2023)\\b",
+        "note_column_keywords": ["\\bNOTE\\b"],
+        "currency_indicators": ["\\bTSD\\b"],
+        "score": 2,
+        "score_comparative_years": 1,
+        "score_notes_or_currency": 1
+    },
+    "balancing_equation": {
+        "score": 5,
+        "relative_tolerance": 1e-2,
+        "absolute_tolerance": 1.0,
+        "total_assets_labels": ["TOTAL TEST ASSETS"],
+        "total_liabilities_labels": ["TOTAL TEST LIABILITIES"],
+        "total_equity_labels": ["TOTAL TEST EQUITY"],
+        "total_liabilities_and_equity_labels": ["TOTAL TEST LIABILITIES AND EQUITY"]
+    },
+    "hard_termination_section_starters": {
+        "keywords": ["TEST INCOME STATEMENT START", "TEST CASH FLOW START"],
+        "regex_patterns": ["^NOTES TO TEST STATEMENTS"]
+    },
+    "block_bonus_max_index": 10,
+    "block_bonus_score": 1,
+    "combination_bonus_score": 1,
+    "strong_table_min_major_sections": 2,
+    "strong_table_min_total_indicators": 1,
+    "strong_table_min_structural_cues": 1
+}

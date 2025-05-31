@@ -1,5 +1,6 @@
 {
-    "max_score_exemplar": 29,
+    "max_score_exemplar": 35,
+    "section_name": "Statement of Financial Position",
     "title_phrases": {
         "keywords": [
             "STATEMENT OF FINANCIAL POSITION", "BALANCE SHEET",
@@ -10,21 +11,21 @@
             "UNAUDITED INTERIM CONDENSED CONSOLIDATED FINANCIAL STATEMENTS"
         ],
         "score": 4,
-        "length_check_buffer": 20
+        "length_check_buffer": 30
     },
     "major_section_keywords": {
         "assets": ["ASSETS", "TOTAL ASSETS"],
         "liabilities": ["LIABILITIES", "TOTAL LIABILITIES"],
         "equity": [
-            "EQUITY", "SHAREHOLDERS' EQUITY", "STOCKHOLDERS' EQUITY",
+            "EQUITY", "SHAREHOLDERS' EQUITY", "STOCKHOLDERS' EQUITY", "SHAREHOLDERS’ EQUITY", "STOCKHOLDERS’ EQUITY",
             "OWNERS' EQUITY", "MEMBERS' EQUITY", "PARTNERS' CAPITAL",
             "CAPITAL", "CAPITAL AND RESERVES", "NET ASSETS", "FUND BALANCE",
             "EQUITY ATTRIBUTABLE TO OWNERS OF THE PARENT",
-            "TOTAL EQUITY", "TOTAL SHAREHOLDERS' EQUITY", "TOTAL STOCKHOLDERS' EQUITY"
+            "TOTAL EQUITY", "TOTAL SHAREHOLDERS' EQUITY", "TOTAL STOCKHOLDERS' EQUITY", "TOTAL SHAREHOLDERS’ EQUITY", "TOTAL STOCKHOLDERS’ EQUITY"
         ],
         "combined_liabilities_equity": [
-            "LIABILITIES AND EQUITY", "LIABILITIES AND STOCKHOLDERS' EQUITY",
-            "LIABILITIES AND SHAREHOLDERS' EQUITY"
+            "LIABILITIES AND EQUITY", "LIABILITIES AND STOCKHOLDERS' EQUITY", "LIABILITIES AND STOCKHOLDERS’ EQUITY",
+            "LIABILITIES AND SHAREHOLDERS' EQUITY", "LIABILITIES AND SHAREHOLDERS’ EQUITY"
         ],
         "score_per_section": 1,
         "max_score": 3
@@ -41,7 +42,8 @@
             "LOANS AND ADVANCES TO CUSTOMERS", "TRADING ASSETS", "CASH AND BALANCES WITH CENTRAL BANKS"
         ],
         "max_score": 3,
-        "count_for_max_score": 5
+        "count_for_max_score": 5,
+        "score_per_item": 0.6
     },
     "liability_keywords": {
         "keywords": [
@@ -52,53 +54,61 @@
             "DEFERRED TAX LIABILITIES", "PENSION OBLIGATIONS", "LEASE OBLIGATIONS", "PROVISIONS",
             "CURRENT LIABILITIES", "NON-CURRENT LIABILITIES", "LONG-TERM LIABILITIES",
             "DEPOSITS FROM CUSTOMERS", "DEBT SECURITIES IN ISSUE",
-            "INSURANCE CONTRACT LIABILITIES"
+            "INSURANCE CONTRACT LIABILITIES", "CONVERTIBLE DEBENTURES"
         ],
         "max_score": 3,
-        "count_for_max_score": 5
+        "count_for_max_score": 5,
+        "score_per_item": 0.6
     },
     "equity_keywords": {
         "keywords": [
             "SHARE CAPITAL", "COMMON STOCK", "PREFERRED STOCK", "CAPITAL STOCK", "ISSUED CAPITAL",
             "ADDITIONAL PAID-IN CAPITAL", "SHARE PREMIUM", "RETAINED EARNINGS", "ACCUMULATED PROFIT",
-            "ACCUMULATED DEFICIT", "REVALUATION RESERVE", "HEDGING RESERVE",
+            "ACCUMULATED DEFICIT", "DEFICIT", "REVALUATION RESERVE", "HEDGING RESERVE", "RESERVES",
             "FOREIGN CURRENCY TRANSLATION RESERVE", "OTHER RESERVES",
-            "ACCUMULATED OTHER COMPREHENSIVE INCOME", "AOCI",
+            "ACCUMULATED OTHER COMPREHENSIVE INCOME", "AOCI", "ACCUMULATED OTHER COMPREHENSIVE LOSS",
             "TREASURY STOCK", "TREASURY SHARES", "NON-CONTROLLING INTERESTS", "NCI", "MINORITY INTEREST",
             "OWNER'S CAPITAL ACCOUNT", "PARTNER'S CAPITAL ACCOUNT"
         ],
         "max_score": 3,
-        "count_for_max_score": 4
+        "count_for_max_score": 4,
+        "score_per_item": 0.75
     },
     "total_indicator_keywords": {
         "keywords": [
-            "TOTAL ASSETS", "TOTAL LIABILITIES", "TOTAL EQUITY", "TOTAL SHAREHOLDERS' EQUITY",
-            "TOTAL STOCKHOLDERS' EQUITY", "TOTAL NET ASSETS", "TOTAL CAPITAL AND RESERVES",
-            "TOTAL LIABILITIES AND EQUITY", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY",
-            "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY",
+            "TOTAL ASSETS", "TOTAL LIABILITIES", "TOTAL EQUITY", "TOTAL SHAREHOLDERS' EQUITY", "TOTAL SHAREHOLDERS’ EQUITY",
+            "TOTAL STOCKHOLDERS' EQUITY", "TOTAL STOCKHOLDERS’ EQUITY", "TOTAL NET ASSETS", "TOTAL CAPITAL AND RESERVES",
+            "TOTAL LIABILITIES AND EQUITY", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY", "TOTAL LIABILITIES AND SHAREHOLDERS’ EQUITY",
+            "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY", "TOTAL LIABILITIES AND STOCKHOLDERS’ EQUITY",
             "TOTAL CURRENT ASSETS", "TOTAL NON-CURRENT ASSETS", "TOTAL LONG-TERM ASSETS",
             "TOTAL CURRENT LIABILITIES", "TOTAL NON-CURRENT LIABILITIES", "TOTAL LONG-TERM LIABILITIES"
         ],
         "critical_totals_for_balance_check": ["TOTAL ASSETS", "TOTAL LIABILITIES", "TOTAL EQUITY", "TOTAL LIABILITIES AND EQUITY"],
         "max_score": 3,
-        "count_for_max_score": 3
+        "count_for_max_score": 3,
+        "score_per_item": 1
     },
     "structural_cues": {
         "comparative_year_pattern": "\\b(19|20)\\d{2}\\b",
-        "note_column_keywords": ["\\bNOTE[S]?\\b", "\\bREF\\.?\\b"],
-        "currency_indicators": [
+        "note_column_keywords_regex": ["\\bNOTE[S]?\\b", "\\bREF\\.?\\b"],
+        "currency_indicators_regex": [
             "\\$\\s*\\d+", "€\\s*\\d+", "£\\s*\\d+", "¥\\s*\\d+",
-            "\\(\\s*IN\\s+(THOUSANDS|MILLIONS|BILLIONS)\\s*\\)",
+            "\\(\\s*IN\\s+(THOUSANDS|MILLIONS|BILLIONS)\\s*OF\\s*(?:USD|EUR|GBP|CAD|AUD)?\\s*\\)",
             "\\b(USD|EUR|GBP|CAD|AUD)\\b"
         ],
-        "score": 2,
         "score_comparative_years": 1,
-        "score_notes_or_currency": 1
+        "score_single_year": 0.5,
+        "score_notes_or_currency": 1,
+        "max_score": 2
     },
     "balancing_equation": {
         "score": 5,
-        "relative_tolerance": 1e-5,
-        "absolute_tolerance": 0.51,
+        "relative_tolerance": 1e-4,
+        "absolute_tolerance": 1.01,
+        "num_columns_to_check_for_balance": 2,
+        "enable_note_ref_heuristic": true,
+        "max_len_for_note_ref_heuristic": 2,
+        "max_value_for_note_ref_heuristic": 20,
         "total_assets_labels": ["TOTAL ASSETS"],
         "total_liabilities_labels": ["TOTAL LIABILITIES"],
         "total_equity_labels": [
@@ -109,7 +119,7 @@
             "TOTAL EQUITY (DEFICIENCY)", "TOTAL EQUITY"
         ],
         "total_liabilities_and_equity_labels": [
-            "TOTAL LIABILITIES AND SHAREHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY (DEFiciency)",
+            "TOTAL LIABILITIES AND SHAREHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY (DEFICIENCY)",
             "TOTAL LIABILITIES AND SHAREHOLDERS’ EQUITY", "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY",
             "TOTAL LIABILITIES AND STOCKHOLDERS’ EQUITY (DEFICIENCY)", "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY (DEFICIENCY)",
             "TOTAL LIABILITIES AND STOCKHOLDERS’ EQUITY", "TOTAL LIABILITIES AND STOCKHOLDERS' EQUITY",
@@ -125,8 +135,8 @@
             "STATEMENT OF COMPREHENSIVE INCOME", "STATEMENT OF OTHER COMPREHENSIVE INCOME",
             "CONSOLIDATED STATEMENT OF COMPREHENSIVE INCOME",
             "STATEMENT OF CASH FLOWS", "CASH FLOW STATEMENT", "CONSOLIDATED STATEMENT OF CASH FLOWS",
-            "STATEMENT OF CHANGES IN EQUITY", "STATEMENT OF SHAREHOLDERS' EQUITY",
-            "STATEMENT OF STOCKHOLDERS' EQUITY", "STATEMENT OF RETAINED EARNINGS",
+            "STATEMENT OF CHANGES IN EQUITY", "STATEMENT OF SHAREHOLDERS' EQUITY", "STATEMENT OF SHAREHOLDERS’ EQUITY",
+            "STATEMENT OF STOCKHOLDERS' EQUITY", "STATEMENT OF STOCKHOLDERS’ EQUITY", "STATEMENT OF RETAINED EARNINGS",
             "CONSOLIDATED STATEMENT OF CHANGES IN EQUITY",
             "NOTES TO FINANCIAL STATEMENTS", "NOTES TO THE FINANCIAL STATEMENTS",
             "NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS",
@@ -141,12 +151,12 @@
         ],
         "regex_patterns": [
             "STATEMENTS?\\s+OF\\s+(FINANCIAL\\s+POSITION|CONDITION)\\b",
-            "STATEMENTS?\\s+OF\\s+(OPERATIONS|EARNINGS|INCOME)\\b",
-            "STATEMENTS?\\s+OF\\s+COMPREHENSIVE\\s+INCOME\\b",
+            "STATEMENTS?\\s+OF\\s+(OPERATIONS|EARNINGS|INCOME|LOSS)\\b",
+            "STATEMENTS?\\s+OF\\s+(COMPREHENSIVE|OTHER\\s+COMPREHENSIVE)\\s+(INCOME|LOSS)\\b",
             "STATEMENTS?\\s+OF\\s+CASH\\s+FLOWS?\\b",
             "STATEMENTS?\\s+OF\\s+CHANGES\\s+IN\\s+(SHAREHOLDERS['’]?\\s+|STOCKHOLDERS['’]?\\s+)?EQUITY\\b",
             "NOTES\\s+TO\\s+(THE\\s+)?(CONSOLIDATED\\s+)?FINANCIAL\\s+STATEMENTS\\b",
-            "^\\s*(?:NOTE\\s+)?(?:\\d+|(?:\\([a-zA-Z0-9]+\\)))\\s*[\\.:\\-‐]?\\s*(?:[A-Z][A-Za-z\\s,'&\\(\\)\\/\\-]{2,})"
+            "^\\s*(?:(?:NOTE|Note)\\s+([A-Z0-9]+(?:\\.[A-Z0-9]+)*(?:\\([a-zA-Z0-9]+\\))?)|([A-Z0-9]+(?:\\.[A-Z0-9]+)*(?:\\([a-zA-Z0-9]+\\))?\\.))\\s+(?=[A-Z]{2,})[A-Z][A-Za-z0-9\\s,'&\\(\\)\\/\\-\\.]{5,}"
         ],
         "content_indicator_regex_for_period_statements": [
             "FOR\\s+THE\\s+YEAR(S)?\\s+ENDED",
@@ -154,12 +164,27 @@
             "FOR\\s+THE\\s+PERIOD\\s+ENDED",
             "PERIOD\\s+ENDED",
             "FOR\\s+THE\\s+\\w+\\s+MONTHS?\\s+ENDED"
-        ]
+        ],
+        "strong_period_header_phrases_standalone_regex": [
+            "YEAR(?:S)?\\s+ENDED\\s+(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\\s+\\d{1,2}(?:,\\s*(?:19|20)\\d{2})?",
+            "FOR\\s+THE\\s+(?:THREE|SIX|NINE|TWELVE)\\s+MONTHS?\\s+ENDED\\s+(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\\s+\\d{1,2}(?:,\\s*(?:19|20)\\d{2})?"
+        ],
+        "min_other_statement_keywords_for_table_termination": 1,
+        "other_statement_termination_keywords": {
+            "line_items": ["REVENUE", "SALES", "COST OF SALES", "GROSS PROFIT", "OPERATING EXPENSES", "NET INCOME", "NET LOSS", "PROFIT FOR THE PERIOD", "LOSS FOR THE PERIOD", "OTHER COMPREHENSIVE INCOME", "EARNINGS PER SHARE"]
+        }
     },
+    "block_bonus_score": 2,
+    "block_bonus_full_score_max_index": 30,
     "block_bonus_max_index": 60,
-    "block_bonus_score": 1,
-    "combination_bonus_score": 1,
-    "strong_table_min_major_sections": 2,
-    "strong_table_min_total_indicators": 1,
-    "strong_table_min_structural_cues": 1
+    "block_bonus_partial_factor": 0.5,
+    "combination_bonus_score": 2,
+    "min_score_factor_for_strong_indicator": 0.4,
+    "min_strong_indicators_for_combo": 3,
+    "min_avg_items_score_for_strong_combo": 1.0,
+    "strong_table_combination_bonus": 3,
+    "max_blocks_in_core_sofp_window": 25,
+    "min_content_blocks_after_title_for_core": 1,
+    "core_confidence_factor_for_expansion": 0.85,
+    "max_blocks_for_sofp_expansion": 20
 }

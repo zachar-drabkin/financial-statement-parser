@@ -1,0 +1,97 @@
+
+{
+    "max_score_exemplar": 30,
+    "section_name": "Test Statement of Financial Position",
+    "title_phrases": {
+        "keywords": ["STATEMENT OF FINANCIAL POSITION", "BALANCE SHEET"],
+        "score": 5,
+        "length_check_buffer": 25
+    },
+    "major_section_keywords": {
+        "assets": ["ASSETS"],
+        "liabilities": ["LIABILITIES"],
+        "equity": ["EQUITY", "SHAREHOLDERS EQUITY"],
+        "combined_liabilities_equity": ["LIABILITIES AND EQUITY"],
+        "score_per_section": 2,
+        "max_score": 6
+    },
+    "asset_keywords": {
+        "keywords": ["CASH", "INVENTORY", "PPE", "RECEIVABLES"],
+        "max_score": 3,
+        "count_for_max_score": 3,
+        "score_per_item": 1
+    },
+    "liability_keywords": {
+        "keywords": ["PAYABLES", "DEBT"],
+        "max_score": 2,
+        "count_for_max_score": 2,
+        "score_per_item": 1
+    },
+    "equity_keywords": {
+        "keywords": ["SHARE CAPITAL", "RETAINED EARNINGS"],
+        "max_score": 2,
+        "count_for_max_score": 2,
+        "score_per_item": 1
+    },
+    "total_indicator_keywords": {
+        "keywords": ["TOTAL ASSETS", "TOTAL LIABILITIES", "TOTAL EQUITY", "TOTAL LIABILITIES AND EQUITY"],
+        "max_score": 4,
+        "count_for_max_score": 2,
+        "score_per_item": 2
+    },
+    "structural_cues": {
+        "comparative_year_pattern": "\\b(2022|2023|2024)\\b",
+        "note_column_keywords_regex": ["\\bNOTE\\b"],
+        "currency_indicators_regex": ["\\$"],
+        "score_comparative_years": 2,
+        "score_single_year": 1,
+        "score_notes_or_currency": 1,
+        "max_score": 3
+    },
+    "balancing_equation": {
+        "score": 10,
+        "relative_tolerance": 1e-3,
+        "absolute_tolerance": 0.51,
+        "num_columns_to_check_for_balance": 2,
+        "enable_note_ref_heuristic": true,
+        "max_len_for_note_ref_heuristic": 1,
+        "max_value_for_note_ref_heuristic": 5,
+        "total_assets_labels": ["TOTAL ASSETS"],
+        "total_liabilities_labels": ["TOTAL LIABILITIES"],
+        "total_equity_labels": ["TOTAL EQUITY", "TOTAL SHAREHOLDERS EQUITY"],
+        "total_liabilities_and_equity_labels": ["TOTAL LIABILITIES AND EQUITY"]
+    },
+    "hard_termination_section_starters": {
+        "keywords": [
+            "STATEMENT OF INCOME",
+            "NOTES TO FINANCIAL STATEMENTS"
+        ],
+        "regex_patterns": [
+            "STATEMENTS?\\s+OF\\s+COMPREHENSIVE\\s+INCOME\\b",
+            "^\\s*(?:(?:NOTE|Note)\\s+([A-Z0-9]+(?:\\.[A-Z0-9]+)*(?:\\([a-zA-Z0-9]+\\))?)|([A-Z0-9]+(?:\\.[A-Z0-9]+)*(?:\\([a-zA-Z0-9]+\\))?\\.))\\s+(?=[A-Z]{2,})[A-Z][A-Za-z0-9\\s,'&\\(\\)\\/\\-\\.]{5,}"
+        ],
+        "content_indicator_regex_for_period_statements": [
+            "FOR\\s+THE\\s+YEAR\\s+ENDED"
+        ],
+        "strong_period_header_phrases_standalone_regex": [
+            "YEAR\\s+ENDED\\s+DECEMBER\\s+31"
+        ],
+        "min_other_statement_keywords_for_table_termination": 1,
+        "other_statement_termination_keywords": {
+            "line_items": ["REVENUE", "NET INCOME"]
+        }
+    },
+    "block_bonus_score": 2,
+    "block_bonus_full_score_max_index": 5,
+    "block_bonus_max_index": 10,
+    "block_bonus_partial_factor": 0.5,
+    "combination_bonus_score": 3,
+    "min_score_factor_for_strong_indicator": 0.5,
+    "min_strong_indicators_for_combo": 3,
+    "min_avg_items_score_for_strong_combo": 1.0,
+    "strong_table_combination_bonus": 4,
+    "max_blocks_in_core_sofp_window": 10,
+    "min_content_blocks_after_title_for_core": 1,
+    "core_confidence_factor_for_expansion": 0.80,
+    "max_blocks_for_sofp_expansion": 5
+}
