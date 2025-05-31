@@ -1,5 +1,5 @@
 {
-    "max_score_exemplar": 12,
+    "max_score_exemplar": 15,
     "title_phrases": {
         "keywords": [
             "CONSOLIDATED FINANCIAL STATEMENTS", "FINANCIAL STATEMENTS",
@@ -65,7 +65,13 @@
     },
     "year_pattern_score": 1,
     "block_bonus_max_index": 10,
-    "block_bonus_score": 1,
+    "block_bonus_full_score_max_index": 5,
+    "block_bonus_score": 2,
     "combination_bonus_min_strong_indicators": 3,
-    "combination_bonus_score": 1
+    "min_score_factor_for_strong_indicator": 0.5,
+    "block_bonus_partial_factor": 0.5,
+    "combination_bonus_score": 2,
+    "allow_contextless_symbols_partial_score": false,
+    "single_block_candidate_min_confidence": 0.45,
+    "contextless_symbol_score_factor": 0.5
 }
