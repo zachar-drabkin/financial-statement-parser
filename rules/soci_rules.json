@@ -27,6 +27,12 @@
             {"text": "STATEMENTS OF LOSS AND COMPREHENSIVE LOSS", "score": 7, "type": "gaap_loss_statement_cons"}
         ],
         "length_check_buffer": 30,
+        "title_relative_buffer_ratio": 0.6,
+        "title_absolute_buffer_min": 10,
+        "title_absolute_buffer_max": 40,
+        "title_suspicious_trailing_content_len_threshold": 25,
+        "title_suspicious_trailing_punctuation": [".", ";"],
+        "title_suspicious_trailing_word_count": 4,
         "min_title_score_paragraph_start": 4,
         "indicative_terms_in_title_paragraph": ["INCOME", "PROFIT", "LOSS", "EARNINGS", "OPERATIONS", "COMPREHENSIVE"]
     },
@@ -42,6 +48,13 @@
         "net_income": [{"text": "NET INCOME", "score": 10}, {"text": "NET EARNINGS", "score": 10}, {"text": "NET LOSS", "score": 10}, {"text": "PROFIT FOR THE PERIOD", "score": 10}, {"text": "LOSS FOR THE PERIOD", "score": 10}, {"text": "PROFIT ATTRIBUTABLE TO OWNERS", "score": 9}],
         "other_pl_specific_items": [{"text": "DEBT FORGIVENESS", "score": 3}, {"text": "GAIN ON FOREIGN EXCHANGE", "score": 3}, {"text": "UNREALIZED GAIN ON MARKETABLE SECURITIES", "score": 4}, {"text": "GAIN ON SALE OF TESTCO PROPERTIES", "score": 4}, {"text": "LOSS ON ROCKET PROJECT TRANSACTIONS", "score": 4}],
         "other_pl_generic_items": [{"text": "DEPRECIATION EXPENSE", "score": 4}, {"text": "AMORTIZATION EXPENSE", "score": 4}, {"text": "OTHER INCOME", "score": 3}, {"text": "OTHER EXPENSE", "score": 3}, {"text": "SHARE OF PROFIT OF ASSOCIATES", "score": 4}, {"text": "SHARE OF LOSS OF ASSOCIATES", "score": 4}],
+        "critical_item_categories": ["revenue", "net_income", "gross_profit", "operating_income", "pre_tax_income"],
+        "min_critical_categories_to_avoid_penalty": 3,
+        "graduated_penalty_factors": {
+            "0": 0.20,
+            "1": 0.50,
+            "2": 0.75
+        },
         "critical_item_missing_penalty_divisor": 3,
         "min_pl_score_for_critical_item_penalty": 10
     },
@@ -50,6 +63,10 @@
         "classification_headers": [{"text": "ITEMS THAT MAY BE RECLASSIFIED SUBSEQUENTLY TO PROFIT OR LOSS", "score": 6}, {"text": "ITEMS THAT WILL NOT BE RECLASSIFIED SUBSEQUENTLY TO PROFIT OR LOSS", "score": 6}],
         "items": [{"text": "EXCHANGE DIFFERENCES ON TRANSLATING FOREIGN OPERATIONS", "score": 7}, {"text": "FOREIGN CURRENCY TRANSLATION ADJUSTMENTS", "score": 7}, {"text": "CURRENCY TRANSLATION DIFFERENCES", "score": 7}, {"text": "UNREALIZED GAINS AND LOSSES ON DEBT INVESTMENTS AT FVOCI", "score": 7}, {"text": "UNREALIZED GAINS AND LOSSES ON EQUITY INVESTMENTS AT FVOCI", "score": 7}, {"text": "AVAILABLE-FOR-SALE FINANCIAL ASSETS", "score": 6}, {"text": "REVALUATION SURPLUS", "score": 6}, {"text": "REMEASUREMENTS OF DEFINED BENEFIT PENSION PLANS", "score": 7}, {"text": "ACTUARIAL GAINS AND LOSSES ON DEFINED BENEFIT PLANS", "score": 7}, {"text": "EFFECTIVE PORTION OF GAINS AND LOSSES ON HEDGING INSTRUMENTS", "score": 6}],
         "aggregations": [{"text": "TOTAL OTHER COMPREHENSIVE INCOME", "score": 7}, {"text": "TOTAL OTHER COMPREHENSIVE LOSS", "score": 7}, {"text": "TOTAL COMPREHENSIVE INCOME", "score": 8}, {"text": "TOTAL COMPREHENSIVE LOSS", "score": 8}, {"text": "COMPREHENSIVE INCOME", "score": 8}, {"text": "COMPREHENSIVE LOSS", "score": 8}],
+        "min_oci_header_score_for_extension_absolute": 5,
+        "min_oci_header_score_for_extension_pnl_factor": 0.05,
+        "min_total_oci_score_for_extension_stop_absolute": 15,
+        "min_total_oci_score_for_extension_stop_pnl_factor": 0.10,
         "min_oci_header_score_for_extension": 5,
         "min_total_oci_score_for_extension_stop": 15
     },
@@ -83,9 +100,11 @@
         "min_pl_score_for_combo": 40,
         "min_oci_score_if_expected_for_combo": 10,
         "min_initial_pl_score_for_ifrs_two_statement_check": 40,
-        "confidence_cap_if_critical_pl_missing": 0.2
+        "confidence_cap_if_critical_pl_missing": 0.25
     },
     "general_config":{
-        "max_blocks_in_oci_extension": 5
+        "max_blocks_in_oci_extension": 5,
+        "oci_extension_max_consecutive_non_contributing_blocks": 1,
+        "oci_extension_max_total_blocks_to_scan": 8
     }
 }
