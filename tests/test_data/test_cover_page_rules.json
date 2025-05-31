@@ -1,0 +1,28 @@
+{
+    "max_score_exemplar": 10,
+    "title_phrases": {
+        "keywords": ["TEST REPORT TITLE", "FINANCIAL OVERVIEW"],
+        "score": 4
+    },
+    "date_phrases": {
+        "keywords": ["FOR THE YEAR 2023", "AS AT DECEMBER 31"],
+        "patterns": ["\\b(JAN|FEB|MAR)\\s+\\d{1,2},\\s+202\\d\\b"],
+        "score": 2
+    },
+    "currency_phrases": {
+        "keywords": ["AMOUNTS IN TESTDOLLARS"],
+        "iso_codes": ["TSD"],
+        "symbols": ["T$"],
+        "score": 2,
+        "single_indicator_score": 1
+    },
+    "company_indicators": {
+        "suffixes": ["TESTCORP", "TESTLTD"],
+        "score": 1
+    },
+    "year_pattern_score": 0,
+    "block_bonus_max_index": 5,
+    "block_bonus_score": 1,
+    "combination_bonus_min_strong_indicators": 2,
+    "combination_bonus_score": 1
+}
